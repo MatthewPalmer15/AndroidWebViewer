@@ -16,7 +16,14 @@ namespace AndroidWebViewer
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
+#endif
+
+#if ANDROID
+            builder.ConfigureMauiHandlers(handlers =>
+            {
+                handlers.AddHandler(typeof(WebView), typeof(Platforms.Android.PrivacyWebViewHandler));
+            });
 #endif
 
             return builder.Build();
