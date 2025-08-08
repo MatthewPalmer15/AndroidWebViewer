@@ -10,7 +10,7 @@ public class PrivacyWebViewHandler : WebViewHandler
     private static HashSet<string> BlockHosts = new(StringComparer.OrdinalIgnoreCase);
     private static bool Allow3pCookies = true;
     private static bool EnableAdBlocking = true;
-    private static HashSet<string> AllowedHosts = new(StringComparer.OrdinalIgnoreCase);
+    private static string AllowedHost = "";
 
     protected override void ConnectHandler(WebView platformView)
     {
@@ -19,10 +19,8 @@ public class PrivacyWebViewHandler : WebViewHandler
         // Load settings
         Allow3pCookies = AppSettings.Get("AllowThirdPartyCookies", "true").Equals("true", StringComparison.OrdinalIgnoreCase);
         EnableAdBlocking = AppSettings.Get("EnableAdBlocking", "true").Equals("true", StringComparison.OrdinalIgnoreCase);
-        var allowedUrls = AppSettings.GetList("TargetUrls") ?? new List<string>();
-        AllowedHosts = allowedUrls.Where(u => !string.IsNullOrWhiteSpace(u))
-                                  .Select(u => new Uri(u).Host)
-                                  .ToHashSet(StringComparer.OrdinalIgnoreCase);
+        var targetUrl = AppSettings.Get("TargetUrl", "https://example.com");
+        AllowedHost = new Uri(targetUrl).Host;
 
         // Load blocklist once
         if (BlockHosts.Count == 0)
@@ -47,39 +45,41 @@ public class PrivacyWebViewHandler : WebViewHandler
         }
 
         var settings = platformView.Settings;
-        settings.JavaScriptEnabled = true;     // needed for most login flows
-        settings.DomStorageEnabled = true;     // modern sites
-        settings.DatabaseEnabled = false;      // reduce local persistence
+        settings.JavaScriptEnabled = true;     // needed for most logins
+        settings.DomStorageEnabled = true;     // needed for modern auth flows
+        settings.DatabaseEnabled = false;      // reduce surface
         settings.SetSupportZoom(false);
         settings.BuiltInZoomControls = false;
         settings.DisplayZoomControls = false;
         settings.SetGeolocationEnabled(false);
         settings.SaveFormData = false;
         settings.MixedContentMode = MixedContentHandling.NeverAllow;
-        settings.CacheMode = CacheModes.NoCache;
+        settings.CacheMode = CacheModes.Default; // allow normal caching for login sessions
 
         if (OperatingSystem.IsAndroidVersionAtLeast(26))
         {
             settings.SafeBrowsingEnabled = true;
         }
 
-        // Cookies for logins (incl. 3rd-party toggle)
+        // Cookies for logins (persisted by WebView)
         var cm = CookieManager.Instance;
         cm.SetAcceptCookie(true);
         try { CookieManager.Instance.SetAcceptThirdPartyCookies(platformView, Allow3pCookies); } catch { }
 
-        platformView.SetWebViewClient(new HardenedClient(BlockHosts, EnableAdBlocking, AllowedHosts));
+        platformView.SetWebViewClient(new HardenedClient(BlockHosts, EnableAdBlocking, AllowedHost));
         platformView.SetWebChromeClient(new HardenedChromeClient()); // deny runtime permissions by default
-        platformView.ClearCache(true);
-        WebStorage.Instance.DeleteAllData();
+
+        // IMPORTANT: Do NOT clear storage/cache here if you want to stay logged in.
+        // platformView.ClearCache(true);                 // <-- leave disabled
+        // WebStorage.Instance.DeleteAllData();           // <-- leave disabled
+        // CookieManager.Instance.RemoveAllCookies(null); // <-- leave disabled
     }
 
     private class HardenedChromeClient : WebChromeClient
     {
         public override void OnPermissionRequest(PermissionRequest request)
         {
-            // Deny camera/mic/geo prompts from pages by default.
-            request?.Deny();
+            request?.Deny(); // deny camera/mic/geo prompts by default
         }
     }
 
@@ -87,13 +87,13 @@ public class PrivacyWebViewHandler : WebViewHandler
     {
         private readonly HashSet<string> _blockHosts;
         private readonly bool _enableBlock;
-        private readonly HashSet<string> _allowedHosts;
+        private readonly string _allowedHost;
 
-        public HardenedClient(HashSet<string> blockHosts, bool enableBlock, HashSet<string> allowedHosts)
+        public HardenedClient(HashSet<string> blockHosts, bool enableBlock, string allowedHost)
         {
             _blockHosts = blockHosts;
             _enableBlock = enableBlock;
-            _allowedHosts = allowedHosts;
+            _allowedHost = allowedHost;
         }
 
         public override bool ShouldOverrideUrlLoading(WebView view, IWebResourceRequest request)
@@ -102,11 +102,12 @@ public class PrivacyWebViewHandler : WebViewHandler
             if (!url.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
                 return true;
 
-            // Restrict to allowed hosts (and subdomains)
+            // Restrict to the single allowed host (and its subdomains)
             try
             {
                 var host = new Uri(url).Host;
-                bool ok = _allowedHosts.Any(h => host.Equals(h, StringComparison.OrdinalIgnoreCase) || host.EndsWith("." + h, StringComparison.OrdinalIgnoreCase));
+                bool ok = host.Equals(_allowedHost, StringComparison.OrdinalIgnoreCase)
+                       || host.EndsWith("." + _allowedHost, StringComparison.OrdinalIgnoreCase);
                 if (!ok) return true;
             }
             catch { return true; }
@@ -123,7 +124,7 @@ public class PrivacyWebViewHandler : WebViewHandler
             {
                 var url = request.Url.ToString();
                 if (!url.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
-                    return Block(); // no http ever
+                    return Block(); // block any http
 
                 var host = request.Url.Host ?? "";
                 if (IsBlockedHost(host))
@@ -158,21 +159,22 @@ public class PrivacyWebViewHandler : WebViewHandler
             var p = path.ToLowerInvariant();
             if (p.Contains("/ads/") || p.Contains("/adserver/") || p.Contains("/advert") || p.Contains("/banner"))
                 return true;
-            if (p.Contains("gpt.js") || p.Contains("adscript") || p.Contains("analytics.js"))
+            if (p.Contains("gpt.js") || p.Contains("adscript") || p.Contains("/analytics") || p.Contains("analytics.js"))
                 return true;
-            if (p.Contains("/analytics") || p.Contains("/measure") || p.Contains("/track") || p.Contains("/pixel"))
+            if (p.Contains("/measure") || p.Contains("/track") || p.Contains("/pixel"))
                 return true;
             return false;
         }
 
         private WebResourceResponse Block()
         {
-            return new WebResourceResponse("text/plain", "utf-8", 204, "No Content", new Dictionary<string, string>(), new MemoryStream());
+            return new WebResourceResponse("text/plain", "utf-8", 204, "No Content",
+                new Dictionary<string, string>(), new MemoryStream());
         }
 
         public override void OnReceivedSslError(WebView view, SslErrorHandler handler, SslError error)
         {
-            handler?.Cancel(); // never bypass SSL errors
+            handler?.Cancel();
         }
     }
 }

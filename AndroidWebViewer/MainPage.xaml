@@ -2,31 +2,13 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AndroidWebViewer.MainPage"
-             Title="Secure Web Container">
+             Title="">
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Back" Clicked="OnBackClicked" />
-        <ToolbarItem Text="Forward" Clicked="OnForwardClicked" />
-        <ToolbarItem Text="Refresh" Clicked="OnRefreshClicked" />
-    </ContentPage.ToolbarItems>
-
-    <Grid RowDefinitions="Auto,Auto,*" Padding="0">
-        <Grid Padding="10">
-            <VerticalStackLayout Spacing="6">
-                <Label Text="Secure Web Container" FontSize="20" FontAttributes="Bold" />
-                <Label x:Name="StatusLabel" Text="Ready" FontSize="12" />
-            </VerticalStackLayout>
-        </Grid>
-
-        <Grid Grid.Row="1" Padding="8" ColumnDefinitions="Auto,*,Auto">
-            <Label Text="Site:" VerticalOptions="Center" />
-            <Picker x:Name="UrlPicker" Grid.Column="1" SelectedIndexChanged="OnUrlSelected" />
-            <Button Grid.Column="2" Text="Go" Clicked="OnGoClicked" />
-        </Grid>
-
+    <!-- Single full-screen WebView -->
+    <Grid Padding="0">
         <WebView x:Name="SecureWebView"
-                 Grid.Row="2"
                  Navigating="OnNavigating"
                  Navigated="OnNavigated" />
     </Grid>
+
 </ContentPage>
