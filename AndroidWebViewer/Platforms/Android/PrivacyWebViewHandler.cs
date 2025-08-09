@@ -55,6 +55,8 @@ public class PrivacyWebViewHandler : WebViewHandler
         settings.SaveFormData = false;
         settings.MixedContentMode = MixedContentHandling.NeverAllow;
         settings.CacheMode = CacheModes.Default; // allow normal caching for login sessions
+        settings.AllowFileAccess = true;
+        settings.AllowContentAccess = true;
 
         if (OperatingSystem.IsAndroidVersionAtLeast(26))
         {
@@ -67,20 +69,12 @@ public class PrivacyWebViewHandler : WebViewHandler
         try { CookieManager.Instance.SetAcceptThirdPartyCookies(platformView, Allow3pCookies); } catch { }
 
         platformView.SetWebViewClient(new HardenedClient(BlockHosts, EnableAdBlocking, AllowedHost));
-        platformView.SetWebChromeClient(new HardenedChromeClient()); // deny runtime permissions by default
+        platformView.SetWebChromeClient(new WebChromeClient()); // deny runtime permissions by default
 
         // IMPORTANT: Do NOT clear storage/cache here if you want to stay logged in.
         // platformView.ClearCache(true);                 // <-- leave disabled
         // WebStorage.Instance.DeleteAllData();           // <-- leave disabled
         // CookieManager.Instance.RemoveAllCookies(null); // <-- leave disabled
-    }
-
-    private class HardenedChromeClient : WebChromeClient
-    {
-        public override void OnPermissionRequest(PermissionRequest request)
-        {
-            request?.Deny(); // deny camera/mic/geo prompts by default
-        }
     }
 
     private class HardenedClient : WebViewClient

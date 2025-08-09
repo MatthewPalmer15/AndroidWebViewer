@@ -11,11 +11,11 @@
 				
 		
 		<ApplicationTitle>VS Code</ApplicationTitle>		<!-- TOCHANGE: Home Screen name -->
-		<ApplicationId>dev.matthewpalmerdev.vscode</ApplicationId> <!-- TOCHANGE: Package name -->
+		<ApplicationId>dev.matthewpalmer.vscode</ApplicationId> <!-- TOCHANGE: Package name -->
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-		<ApplicationVersion>1</ApplicationVersion>
+		<ApplicationDisplayVersion>2.0</ApplicationDisplayVersion>
+		<ApplicationVersion>2</ApplicationVersion>
 
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
 		<WindowsPackageType>None</WindowsPackageType>
