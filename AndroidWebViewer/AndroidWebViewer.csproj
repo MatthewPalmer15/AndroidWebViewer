@@ -1,5 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<PropertyGroup Condition="'$(Configuration)'=='Mine'">
+			<Brand>mine</Brand>
+			<AppTitle>Mine</AppTitle>
+			<DefineConstants>$(DefineConstants);MINE</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup>
+		<Brand Condition="'$(Brand)'==''">default</Brand>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<AndroidManifestPlaceholders>
+			brand=$(Brand);
+			appicon=appicon_$(Brand)
+		</AndroidManifestPlaceholders>
+	</PropertyGroup>
+	<PropertyGroup>
+		<DefineConstants>$(DefineConstants);APP_BRAND="$(Brand)"</DefineConstants>
+	</PropertyGroup>
+
+
 	<PropertyGroup>
 		<TargetFrameworks>net8.0-android</TargetFrameworks>
 		<OutputType>Exe</OutputType>
@@ -8,10 +28,9 @@
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-				
-		
-		<ApplicationTitle>VS Code</ApplicationTitle>		<!-- TOCHANGE: Home Screen name -->
-		<ApplicationId>dev.matthewpalmer.vscode</ApplicationId> <!-- TOCHANGE: Package name -->
+
+		<ApplicationTitle>$(Brand)</ApplicationTitle>
+		<ApplicationId>dev.matthewpalmer.$(Brand)</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>2.0</ApplicationDisplayVersion>
@@ -21,11 +40,13 @@
 		<WindowsPackageType>None</WindowsPackageType>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<Configurations>Debug;Release;Mine</Configurations>
+
 	</PropertyGroup>
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.png" />
+		<MauiIcon Include="Resources\AppIcon\appicon_$(Brand).png" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#000000" BaseSize="128,128" />
@@ -44,6 +65,7 @@
 
 	<ItemGroup>
 		<MauiAsset Include="Resources\Raw\appsettings.json" LogicalName="appsettings.json" />
+		<MauiAsset Include="Resources\Raw\appsettings.$(Brand).json" LogicalName="appsettings.$(Brand).json" />
 		<MauiAsset Include="Resources\Raw\blocklist.txt" LogicalName="blocklist.txt" />
 	</ItemGroup>
 
@@ -51,5 +73,4 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.5" />
 	</ItemGroup>
-
 </Project>

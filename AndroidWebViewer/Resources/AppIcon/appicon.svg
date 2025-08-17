@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-	<rect width="512" height="512" rx="112" ry="112" fill="#111111"/>
-	<g transform="translate(256,256)">
-		<circle r="144" fill="#FFFFFF"/>
-		<path d="M-72,0 a72,72 0 1,0 144,0 a90,90 0 1,1 -144,0 Z" fill="#111111"/>
-	</g>
-</svg>

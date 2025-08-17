@@ -6,9 +6,22 @@ public partial class MainPage : ContentPage
     private bool EnforceAllowedDomainsOnly => AppSettings.Get("EnforceAllowedDomainsOnly", "true")
                                                         .Equals("true", StringComparison.OrdinalIgnoreCase);
 
+    private readonly HashSet<string> _allowedHosts = new(StringComparer.OrdinalIgnoreCase);
+
     public MainPage()
     {
         InitializeComponent();
+
+        // Build allow-list (primary + extras)
+        var primaryHost = new Uri(TargetUrl).Host;
+        _allowedHosts.Add(primaryHost);
+        var extras = AppSettings.Get("AdditionalAllowedHosts", "");
+        foreach (var h in extras.Split(new[] { ',', ';', ' ', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries))
+        {
+            var trimmed = h.Trim();
+            if (!string.IsNullOrWhiteSpace(trimmed)) _allowedHosts.Add(trimmed);
+        }
+
         LoadUrl(TargetUrl);
     }
 
@@ -27,17 +40,18 @@ public partial class MainPage : ContentPage
         var url = e.Url ?? "";
         if (!url.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
         {
-            e.Cancel = true;
-            return; // block non-HTTPS
+            e.Cancel = true; // block non-HTTPS
+            return;
         }
 
         if (EnforceAllowedDomainsOnly)
         {
             var destHost = new Uri(url).Host;
-            var allowedHost = new Uri(TargetUrl).Host;
-            // allow subdomains of the target host
-            bool ok = destHost.Equals(allowedHost, StringComparison.OrdinalIgnoreCase)
-                   || destHost.EndsWith("." + allowedHost, StringComparison.OrdinalIgnoreCase);
+
+            bool ok = _allowedHosts.Any(allowed =>
+                destHost.Equals(allowed, StringComparison.OrdinalIgnoreCase) ||
+                destHost.EndsWith("." + allowed, StringComparison.OrdinalIgnoreCase));
+
             if (!ok)
             {
                 e.Cancel = true;
@@ -48,23 +62,55 @@ public partial class MainPage : ContentPage
 
     void OnNavigated(object sender, WebNavigatedEventArgs e) { /* no-op */ }
 }
-
 public static class AppSettings
 {
-    private static readonly string EmbeddedName = "appsettings.json";
+    private static readonly string DefaultName = "appsettings.json";
+    private static Dictionary<string, string>? _cache;
+
+    static AppSettings()
+    {
+        Load();
+    }
+
+
+    private static string GetBrand()
+    {
+#if MINE
+        return "mine";
+#endif
+
+        return "default";
+    }
+
+    public static void Load()
+    {
+        var brand = GetBrand();
+
+        var tried = new List<string>();
+        foreach (var name in new[] {
+                     string.IsNullOrWhiteSpace(brand) ? null : $"appsettings.{brand}.json",
+                     DefaultName
+                 }.Where(n => n != null)!)
+        {
+            tried.Add(name!);
+            try
+            {
+                using var stream = FileSystem.OpenAppPackageFileAsync(name!).Result;
+                using var reader = new StreamReader(stream);
+                var json = reader.ReadToEnd();
+                _cache = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+                if (_cache != null) return;
+            }
+            catch { /* try next */ }
+        }
+        _cache = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+    }
 
     public static string Get(string key, string fallback = "")
-    {
-        try
-        {
-            using var stream = FileSystem.OpenAppPackageFileAsync(EmbeddedName).Result;
-            using var reader = new StreamReader(stream);
-            var json = reader.ReadToEnd();
-            var dict = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(json);
-            if (dict != null && dict.TryGetValue(key, out var val))
-                return val;
-        }
-        catch { }
-        return fallback;
-    }
+        => (_cache != null && _cache.TryGetValue(key, out var val)) ? val : fallback;
+
+    // Optional helper
+    public static string[] GetList(string key)
+        => Get(key, "")
+            .Split(new[] { ',', ';', ' ', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
 }
