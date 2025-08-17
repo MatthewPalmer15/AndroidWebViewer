@@ -1,10 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup Condition="'$(Configuration)'=='Mine'">
-			<Brand>mine</Brand>
-			<AppTitle>Mine</AppTitle>
-			<DefineConstants>$(DefineConstants);MINE</DefineConstants>
-	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='VSCode'">
 	  <Brand>vscode</Brand>
 	  <AppTitle>VSCode</AppTitle>
@@ -58,7 +52,7 @@
 		<WindowsPackageType>None</WindowsPackageType>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
-		<Configurations>Mine;VSCode;Cloudflare;Sora</Configurations>
+		<Configurations>VSCode;Cloudflare;Sora</Configurations>
 
 	</PropertyGroup>
 
@@ -70,7 +64,6 @@
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" />
 
 		<!-- Images -->
-		<MauiImage Include="Resources\Images\*" />
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
 

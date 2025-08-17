@@ -1,16 +1,18 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace AndroidWebViewer
-{
-    [Application]
-    public class MainApplication : MauiApplication
-    {
-        public MainApplication(IntPtr handle, JniHandleOwnership ownership)
-            : base(handle, ownership)
-        {
-        }
+namespace AndroidWebViewer.Platforms.Android;
 
-        protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+[Application]
+public class MainApplication : MauiApplication
+{
+    public MainApplication(nint handle, JniHandleOwnership ownership)
+        : base(handle, ownership)
+    {
+    }
+
+    protected override MauiApp CreateMauiApp()
+    {
+        return MauiProgram.CreateMauiApp();
     }
 }

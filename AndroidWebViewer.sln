@@ -9,7 +9,6 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Cloudflare|Any CPU = Cloudflare|Any CPU
 		Debug|Any CPU = Debug|Any CPU
-		Mine|Any CPU = Mine|Any CPU
 		Release|Any CPU = Release|Any CPU
 		Sora|Any CPU = Sora|Any CPU
 		VSCode|Any CPU = VSCode|Any CPU
@@ -19,10 +18,8 @@ Global
 		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Cloudflare|Any CPU.Build.0 = Cloudflare|Any CPU
 		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Cloudflare|Any CPU.Deploy.0 = Cloudflare|Any CPU
 		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Debug|Any CPU.ActiveCfg = VSCode|Any CPU
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Mine|Any CPU.ActiveCfg = Mine|Any CPU
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Mine|Any CPU.Build.0 = Mine|Any CPU
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Mine|Any CPU.Deploy.0 = Mine|Any CPU
 		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Release|Any CPU.ActiveCfg = Cloudflare|Any CPU
+		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Release|Any CPU.Deploy.0 = Cloudflare|Any CPU
 		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Sora|Any CPU.ActiveCfg = Sora|Any CPU
 		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Sora|Any CPU.Build.0 = Sora|Any CPU
 		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Sora|Any CPU.Deploy.0 = Sora|Any CPU

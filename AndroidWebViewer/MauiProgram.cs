@@ -1,32 +1,31 @@
-﻿using AndroidWebViewer.Platforms.Android.Web;
+﻿using AndroidWebViewer.Platforms.Android.Handlers;
 
-namespace AndroidWebViewer
+namespace AndroidWebViewer;
+
+public static class MauiProgram
 {
-    public static class MauiProgram
+    public static MauiApp CreateMauiApp()
     {
-        public static MauiApp CreateMauiApp()
-        {
-            var builder = MauiApp.CreateBuilder();
-            builder
-                .UseMauiApp<App>()
-                .ConfigureFonts(fonts =>
-                {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                });
+        var builder = MauiApp.CreateBuilder();
+        builder
+            .UseMauiApp<App>()
+            .ConfigureFonts(fonts =>
+            {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+            });
 
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
 
 #if ANDROID
-            builder.ConfigureMauiHandlers(handlers =>
-            {
-                handlers.AddHandler(typeof(WebView), typeof(MyAndroidWebViewHandler));
-            });
+        builder.ConfigureMauiHandlers(handlers =>
+        {
+            handlers.AddHandler(typeof(WebView), typeof(NormalWebViewHandler));
+        });
 #endif
 
-            return builder.Build();
-        }
+        return builder.Build();
     }
 }

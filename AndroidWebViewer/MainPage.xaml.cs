@@ -1,11 +1,9 @@
-﻿namespace AndroidWebViewer;
+﻿using System.Text.Json;
+
+namespace AndroidWebViewer;
 
 public partial class MainPage : ContentPage
 {
-    private string TargetUrl { get; } = AppSettings.Get("TargetUrl", "https://example.com");
-    private bool EnforceAllowedDomainsOnly => AppSettings.Get("EnforceAllowedDomainsOnly", "true")
-                                                        .Equals("true", StringComparison.OrdinalIgnoreCase);
-
     private readonly HashSet<string> _allowedHosts = new(StringComparer.OrdinalIgnoreCase);
 
     public MainPage()
@@ -15,7 +13,7 @@ public partial class MainPage : ContentPage
         // Build allow-list (primary + extras)
         var primaryHost = new Uri(TargetUrl).Host;
         _allowedHosts.Add(primaryHost);
-        var extras = AppSettings.Get("AdditionalAllowedHosts", "");
+        var extras = AppSettings.Get("AdditionalAllowedHosts");
         foreach (var h in extras.Split(new[] { ',', ';', ' ', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries))
         {
             var trimmed = h.Trim();
@@ -24,6 +22,11 @@ public partial class MainPage : ContentPage
 
         LoadUrl(TargetUrl);
     }
+
+    private string TargetUrl { get; } = AppSettings.Get("TargetUrl", "https://example.com");
+
+    private bool EnforceAllowedDomainsOnly => AppSettings.Get("EnforceAllowedDomainsOnly", "true")
+        .Equals("true", StringComparison.OrdinalIgnoreCase);
 
     private void LoadUrl(string url)
     {
@@ -35,7 +38,7 @@ public partial class MainPage : ContentPage
 #endif
     }
 
-    void OnNavigating(object sender, WebNavigatingEventArgs e)
+    private void OnNavigating(object sender, WebNavigatingEventArgs e)
     {
         var url = e.Url ?? "";
         if (!url.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
@@ -48,20 +51,20 @@ public partial class MainPage : ContentPage
         {
             var destHost = new Uri(url).Host;
 
-            bool ok = _allowedHosts.Any(allowed =>
+            var ok = _allowedHosts.Any(allowed =>
                 destHost.Equals(allowed, StringComparison.OrdinalIgnoreCase) ||
                 destHost.EndsWith("." + allowed, StringComparison.OrdinalIgnoreCase));
 
-            if (!ok)
-            {
-                e.Cancel = true;
-                return;
-            }
+            if (!ok) e.Cancel = true;
         }
     }
 
-    void OnNavigated(object sender, WebNavigatedEventArgs e) { /* no-op */ }
+    private void OnNavigated(object sender, WebNavigatedEventArgs e)
+    {
+        /* no-op */
+    }
 }
+
 public static class AppSettings
 {
     private static readonly string DefaultName = "appsettings.json";
@@ -75,9 +78,7 @@ public static class AppSettings
 
     private static string GetBrand()
     {
-#if MINE
-        return "mine";
-#elif VSCODE
+#if VSCODE
         return "vscode";
 #elif CLOUDFLARE
         return "cloudflare";
@@ -93,7 +94,8 @@ public static class AppSettings
         var brand = GetBrand();
 
         var tried = new List<string>();
-        foreach (var name in new[] {
+        foreach (var name in new[]
+                 {
                      string.IsNullOrWhiteSpace(brand) ? null : $"appsettings.{brand}.json",
                      DefaultName
                  }.Where(n => n != null)!)
@@ -104,19 +106,27 @@ public static class AppSettings
                 using var stream = FileSystem.OpenAppPackageFileAsync(name!).Result;
                 using var reader = new StreamReader(stream);
                 var json = reader.ReadToEnd();
-                _cache = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+                _cache = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
                 if (_cache != null) return;
             }
-            catch { /* try next */ }
+            catch
+            {
+                /* try next */
+            }
         }
+
         _cache = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
     }
 
     public static string Get(string key, string fallback = "")
-        => (_cache != null && _cache.TryGetValue(key, out var val)) ? val : fallback;
+    {
+        return _cache != null && _cache.TryGetValue(key, out var val) ? val : fallback;
+    }
 
     // Optional helper
     public static string[] GetList(string key)
-        => Get(key, "")
+    {
+        return Get(key)
             .Split(new[] { ',', ';', ' ', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+    }
 }
