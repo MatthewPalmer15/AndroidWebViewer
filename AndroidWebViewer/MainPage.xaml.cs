@@ -77,6 +77,12 @@ public static class AppSettings
     {
 #if MINE
         return "mine";
+#elif VSCODE
+        return "vscode";
+#elif CLOUDFLARE
+        return "cloudflare";
+#elif SORA
+        return "sora";
 #endif
 
         return "default";

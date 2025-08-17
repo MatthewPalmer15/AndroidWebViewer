@@ -5,6 +5,24 @@
 			<AppTitle>Mine</AppTitle>
 			<DefineConstants>$(DefineConstants);MINE</DefineConstants>
 	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='VSCode'">
+	  <Brand>vscode</Brand>
+	  <AppTitle>VSCode</AppTitle>
+	  <DefineConstants>$(DefineConstants);VSCODE</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Cloudflare'">
+		<Brand>cloudflare</Brand>
+		<AppTitle>Cloudflare</AppTitle>
+		<DefineConstants>$(DefineConstants);CLOUDFLARE</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Sora'">
+		<Brand>sora</Brand>
+		<AppTitle>Sora</AppTitle>
+		<DefineConstants>$(DefineConstants);SORA</DefineConstants>
+	</PropertyGroup>
+
+
+
 	<PropertyGroup>
 		<Brand Condition="'$(Brand)'==''">default</Brand>
 	</PropertyGroup>
@@ -40,7 +58,7 @@
 		<WindowsPackageType>None</WindowsPackageType>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
-		<Configurations>Debug;Release;Mine</Configurations>
+		<Configurations>Mine;VSCode;Cloudflare;Sora</Configurations>
 
 	</PropertyGroup>
 
@@ -49,7 +67,7 @@
 		<MauiIcon Include="Resources\AppIcon\appicon_$(Brand).png" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#000000" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />

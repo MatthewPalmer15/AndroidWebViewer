@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AndroidWebViewer.Platforms.Android.Web;
 
 namespace AndroidWebViewer
 {
@@ -22,7 +22,7 @@ namespace AndroidWebViewer
 #if ANDROID
             builder.ConfigureMauiHandlers(handlers =>
             {
-                handlers.AddHandler(typeof(WebView), typeof(Platforms.Android.PrivacyWebViewHandler));
+                handlers.AddHandler(typeof(WebView), typeof(MyAndroidWebViewHandler));
             });
 #endif
 
