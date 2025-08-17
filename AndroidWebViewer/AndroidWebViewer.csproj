@@ -14,24 +14,20 @@
 		<AppTitle>Sora</AppTitle>
 		<DefineConstants>$(DefineConstants);SORA</DefineConstants>
 	</PropertyGroup>
-
-
-
+	<PropertyGroup Condition="'$(Configuration)'=='GitLab'">
+		<Brand>gitlab</Brand>
+		<AppTitle>Gitlab</AppTitle>
+		<DefineConstants>$(DefineConstants);GITLAB</DefineConstants>
+	</PropertyGroup>
 	<PropertyGroup>
 		<Brand Condition="'$(Brand)'==''">default</Brand>
 	</PropertyGroup>
-
 	<PropertyGroup>
 		<AndroidManifestPlaceholders>
 			brand=$(Brand);
 			appicon=appicon_$(Brand)
 		</AndroidManifestPlaceholders>
 	</PropertyGroup>
-	<PropertyGroup>
-		<DefineConstants>$(DefineConstants);APP_BRAND="$(Brand)"</DefineConstants>
-	</PropertyGroup>
-
-
 	<PropertyGroup>
 		<TargetFrameworks>net8.0-android</TargetFrameworks>
 		<OutputType>Exe</OutputType>
@@ -45,28 +41,21 @@
 		<ApplicationId>dev.matthewpalmer.$(Brand)</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>2.0</ApplicationDisplayVersion>
-		<ApplicationVersion>2</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
 
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
 		<WindowsPackageType>None</WindowsPackageType>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
-		<Configurations>VSCode;Cloudflare;Sora</Configurations>
+		<Configurations>VSCode;Cloudflare;Sora;GitLab</Configurations>
 
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon_$(Brand).png" />
 
-		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" />
-
-		<!-- Images -->
-		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
-
 	</ItemGroup>
 
 	<ItemGroup>

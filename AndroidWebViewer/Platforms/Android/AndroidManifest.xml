@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="dev.matthewpalmer.${brand}">
+          package="$(ApplicationId)">
 
 	<uses-sdk android:minSdkVersion="21" />
 
@@ -16,9 +15,9 @@
 	<uses-permission android:name="android.permission.RECORD_AUDIO" />
 
 	<application
-		android:icon="@mipmap/${appicon}"
-		android:roundIcon="@mipmap/${appicon}"
-		android:label="${brand}"
+		android:icon="@mipmap/appicon"
+		android:roundIcon="@mipmap/appicon"
+		android:label="$(ApplicationTitle)"
 		android:usesCleartextTraffic="false"
 		android:networkSecurityConfig="@xml/network_security_config">
 	</application>
