@@ -1,5 +1,4 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -8,24 +7,25 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Cloudflare|Any CPU = Cloudflare|Any CPU
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		GitLab|Any CPU = GitLab|Any CPU
 		Sora|Any CPU = Sora|Any CPU
 		VSCode|Any CPU = VSCode|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Cloudflare|Any CPU.ActiveCfg = Cloudflare|Any CPU
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Cloudflare|Any CPU.Build.0 = Cloudflare|Any CPU
+		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Cloudflare|Any CPU.Build.0  = Cloudflare|Any CPU
 		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Cloudflare|Any CPU.Deploy.0 = Cloudflare|Any CPU
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Debug|Any CPU.ActiveCfg = VSCode|Any CPU
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Debug|Any CPU.Build.0 = VSCode|Any CPU
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Release|Any CPU.ActiveCfg = Cloudflare|Any CPU
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Release|Any CPU.Build.0 = Cloudflare|Any CPU
+
+		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.GitLab|Any CPU.ActiveCfg = GitLab|Any CPU
+		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.GitLab|Any CPU.Build.0  = GitLab|Any CPU
+		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.GitLab|Any CPU.Deploy.0 = GitLab|Any CPU
+
 		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Sora|Any CPU.ActiveCfg = Sora|Any CPU
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Sora|Any CPU.Build.0 = Sora|Any CPU
+		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Sora|Any CPU.Build.0  = Sora|Any CPU
 		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Sora|Any CPU.Deploy.0 = Sora|Any CPU
+
 		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.VSCode|Any CPU.ActiveCfg = VSCode|Any CPU
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.VSCode|Any CPU.Build.0 = VSCode|Any CPU
+		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.VSCode|Any CPU.Build.0  = VSCode|Any CPU
 		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.VSCode|Any CPU.Deploy.0 = VSCode|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
