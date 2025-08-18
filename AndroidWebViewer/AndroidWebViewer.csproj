@@ -1,20 +1,15 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup Condition="'$(Configuration)'=='VSCode'">
-	  <Brand>vscode</Brand>
-	  <AppTitle>VSCode</AppTitle>
-	  <DefineConstants>$(DefineConstants);VSCODE</DefineConstants>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)'=='Cloudflare'">
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup Condition="'$(Configuration)'=='DebugCloudflare' Or '$(Configuration)'=='ReleaseCloudflare'">
 		<Brand>cloudflare</Brand>
 		<AppTitle>Cloudflare</AppTitle>
 		<DefineConstants>$(DefineConstants);CLOUDFLARE</DefineConstants>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)'=='Sora'">
+	<PropertyGroup Condition="'$(Configuration)'=='DebugSora' Or '$(Configuration)'=='ReleaseSora'">
 		<Brand>sora</Brand>
 		<AppTitle>Sora</AppTitle>
 		<DefineConstants>$(DefineConstants);SORA</DefineConstants>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)'=='GitLab'">
+	<PropertyGroup Condition="'$(Configuration)'=='DebugGitLab' Or '$(Configuration)'=='ReleaseGitLab'">
 		<Brand>gitlab</Brand>
 		<AppTitle>Gitlab</AppTitle>
 		<DefineConstants>$(DefineConstants);GITLAB</DefineConstants>
@@ -29,7 +24,12 @@
 		</AndroidManifestPlaceholders>
 	</PropertyGroup>
 	<PropertyGroup>
-		<TargetFrameworks>net8.0-android</TargetFrameworks>
+		<AndroidManifestPlaceholders>brand=$(Brand);</AndroidManifestPlaceholders>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<TargetFrameworks>net9.0-android;</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>AndroidWebViewer</RootNamespace>
 		<UseMaui>true</UseMaui>
@@ -37,30 +37,34 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 
-		<ApplicationTitle>$(Brand)</ApplicationTitle>
+		<ApplicationTitle>$(AppTitle)</ApplicationTitle>
 		<ApplicationId>dev.matthewpalmer.$(Brand)</ApplicationId>
 
-		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
 
-		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
 		<WindowsPackageType>None</WindowsPackageType>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
-		<Configurations>VSCode;Cloudflare;Sora;GitLab</Configurations>
-
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+		<Configurations>Debug;Release;DebugGitLab;DebugCloudflare;DebugSora;ReleaseGitLab;ReleaseCloudflare;ReleaseSora</Configurations>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<MauiIcon Include="Resources\AppIcon\appicon_$(Brand).png" />
 
-		<MauiFont Include="Resources\Fonts\*" />
-	</ItemGroup>
+		<!-- Splash Screen -->
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
 
-	<ItemGroup>
-		<AndroidManifest Include="Platforms/Android/AndroidManifest.xml" />
-		<AndroidResource Include="Platforms/Android/Resources/xml/network_security_config.xml" />
+		<!-- Images -->
+		<MauiImage Include="Resources\Images\*" />
+		
+		<!-- Custom Fonts -->
+		<MauiFont Include="Resources\Fonts\*" />
+
+		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -73,4 +77,5 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.5" />
 	</ItemGroup>
+
 </Project>

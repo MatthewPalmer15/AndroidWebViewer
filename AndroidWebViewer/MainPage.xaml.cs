@@ -84,6 +84,8 @@ public static class AppSettings
         return "cloudflare";
 #elif SORA
         return "sora";
+#elif GITLAB
+        return "gitlab";
 #endif
 
         return "default";

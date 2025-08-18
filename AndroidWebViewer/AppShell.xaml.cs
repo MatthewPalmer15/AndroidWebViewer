@@ -1,9 +1,10 @@
-﻿namespace AndroidWebViewer;
-
-public partial class AppShell : Shell
+﻿namespace AndroidWebViewer
 {
-    public AppShell()
+    public partial class AppShell : Shell
     {
-        InitializeComponent();
+        public AppShell()
+        {
+            InitializeComponent();
+        }
     }
 }

@@ -1,32 +1,46 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroidWebViewer", "AndroidWebViewer\AndroidWebViewer.csproj", "{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroidWebViewer", "AndroidWebViewer\AndroidWebViewer.csproj", "{F48DF901-E08E-4889-AC52-6F0F701F019F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Cloudflare|Any CPU = Cloudflare|Any CPU
-		GitLab|Any CPU = GitLab|Any CPU
-		Sora|Any CPU = Sora|Any CPU
-		VSCode|Any CPU = VSCode|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		DebugCloudflare|Any CPU = DebugCloudflare|Any CPU
+		DebugGitLab|Any CPU = DebugGitLab|Any CPU
+		DebugSora|Any CPU = DebugSora|Any CPU
+		Release|Any CPU = Release|Any CPU
+		ReleaseCloudflare|Any CPU = ReleaseCloudflare|Any CPU
+		ReleaseGitLab|Any CPU = ReleaseGitLab|Any CPU
+		ReleaseSora|Any CPU = ReleaseSora|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Cloudflare|Any CPU.ActiveCfg = Cloudflare|Any CPU
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Cloudflare|Any CPU.Build.0  = Cloudflare|Any CPU
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Cloudflare|Any CPU.Deploy.0 = Cloudflare|Any CPU
-
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.GitLab|Any CPU.ActiveCfg = GitLab|Any CPU
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.GitLab|Any CPU.Build.0  = GitLab|Any CPU
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.GitLab|Any CPU.Deploy.0 = GitLab|Any CPU
-
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Sora|Any CPU.ActiveCfg = Sora|Any CPU
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Sora|Any CPU.Build.0  = Sora|Any CPU
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.Sora|Any CPU.Deploy.0 = Sora|Any CPU
-
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.VSCode|Any CPU.ActiveCfg = VSCode|Any CPU
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.VSCode|Any CPU.Build.0  = VSCode|Any CPU
-		{B97776AF-5531-4B58-A8AF-3BEA5E074FE0}.VSCode|Any CPU.Deploy.0 = VSCode|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.DebugCloudflare|Any CPU.ActiveCfg = DebugCloudflare|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.DebugCloudflare|Any CPU.Build.0 = DebugCloudflare|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.DebugCloudflare|Any CPU.Deploy.0 = DebugCloudflare|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.DebugGitLab|Any CPU.ActiveCfg = DebugGitLab|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.DebugGitLab|Any CPU.Build.0 = DebugGitLab|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.DebugGitLab|Any CPU.Deploy.0 = DebugGitLab|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.DebugSora|Any CPU.ActiveCfg = DebugSora|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.DebugSora|Any CPU.Build.0 = DebugSora|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.DebugSora|Any CPU.Deploy.0 = DebugSora|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.ReleaseCloudflare|Any CPU.ActiveCfg = ReleaseCloudflare|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.ReleaseCloudflare|Any CPU.Build.0 = ReleaseCloudflare|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.ReleaseCloudflare|Any CPU.Deploy.0 = ReleaseCloudflare|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.ReleaseGitLab|Any CPU.ActiveCfg = ReleaseGitLab|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.ReleaseGitLab|Any CPU.Build.0 = ReleaseGitLab|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.ReleaseGitLab|Any CPU.Deploy.0 = ReleaseGitLab|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.ReleaseSora|Any CPU.ActiveCfg = ReleaseSora|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.ReleaseSora|Any CPU.Build.0 = ReleaseSora|Any CPU
+		{F48DF901-E08E-4889-AC52-6F0F701F019F}.ReleaseSora|Any CPU.Deploy.0 = ReleaseSora|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
